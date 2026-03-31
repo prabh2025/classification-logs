@@ -1,4 +1,3 @@
-import mlflow
 import time
 import logging
 import sys
@@ -27,14 +26,6 @@ def classify_log(source, log_msg):
             method = "bert"
 
     latency = (time.time() - start) * 1000
-
-    # ✅ Log every prediction to MLflow
-    with mlflow.start_run(run_name=f"{method}_prediction", nested=True):
-        mlflow.log_param("source", source)
-        mlflow.log_param("method", method)
-        mlflow.log_param("label", label or "Unclassified")
-        mlflow.log_metric("latency_ms", latency)
-
     logger.info(f"[{method.upper()}] {source} → {label} ({latency:.1f}ms)")
     return label
 
@@ -49,9 +40,4 @@ def classify_csv(input_file):
     )
     output_file = "resources/output.csv"
     df.to_csv(output_file, index=False)
-    logger.info(f"Saved to {output_file}")
     return output_file
-
-if __name__ == '__main__':
-    mlflow.set_experiment("log_classification")
-    classify_csv("resources/test.csv")
