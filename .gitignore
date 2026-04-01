@@ -6,3 +6,7 @@ mlruns/
 venv/
 __pycache__/
 *.db
+*.db
+mlruns/
+venv/
+__pycache__/
